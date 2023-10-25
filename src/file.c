@@ -75,17 +75,38 @@ int is_Present(char filename[],listfile_entry * filelist)
 */
 int add_file(char filename[],listfile_entry * filelist, hash_table * htable_ptr)
 {
-	if(is_Present(filename,filelist)) { return 1; }
+   FILE *fp;
+   fp = fopen(filename, "r");
+   if(fp == NULL) {
+      perror("Error opening file, or can't be read\n");
+      return(-1);
+  }
+	if(is_Present(filename,filelist)) { 
+    perror("File already present in table\n");
+    return 1; }
 	else {
 	int i =0;
 		while(filelist[i].filename[0]!='\0'){
 		i++;
+      if (i == MAX_FILES ) {
+        perror("No space left in filelist\n");
+        return 2;
+      }
 		}
-		filelist[i].filename=filename;
+    strcpy(filelist[i].filename, filename);
 		filelist[i].loaded=1;
-		
+    //load dans la hashtable, -> update table
+    char * wordactuel[MAX_LENGTH];
+    while((fp=getc(fp))!=EOF){
+      while((fp=getc(fp))!=" " || (fp=getc(fp))!="\n"){
+          fputc(wordactuel, fp);
+      }
+      update_table(htable_ptr,wordactuel,filename,i);
+      //erreur alloc -2
+    }
 	}
-
+  //update table si erreur retourne -2
+  fclose(fp);
   return 0; // all fine
 }
 

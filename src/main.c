@@ -44,17 +44,18 @@ main()
 
       // Load a file in dictionary
     case 1:
-      
-      // TO BE COMPLETED
+     fprintf(stderr, "Filename to Load ? \n");
+     char filetoload[MAX_LENGTH]; //a corriger plus tard, path dossier
+     scanf("%s", filetoload);
+     add_file(filetoload, filelistptr, hashtableptr);
 
       break;
 
       // Search a word in dictionary
     case 2:
       	printf("Entrez un mot a rechercher :\n");
-      	char wordSearched[20];	//TODO a modif taille
-      	scanf("%s", wordSearched);
-	search_word(wordSearched , filelistptr,hashtableptr);
+      	//scanf("%s", wordSearched);
+	      //search_word(wordSearched , filelistptr,hashtableptr);
 
       break;
 
@@ -90,13 +91,3 @@ main()
   return 0;
 }
 
-// compute hash value for word
-// returns : N ; 0 <= N < size
-int
-hashcode(char word[], int size)
-{
-	int hash_val = 0;
-	while( *word != '\0' )
-	hash_val += *word++;
-	return( hash_val % size );
-}

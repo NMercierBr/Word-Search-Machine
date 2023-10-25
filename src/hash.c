@@ -14,6 +14,16 @@
 // global functions definitions
 //------------------------------------------------------------------------
 
+// compute hash value for word
+// returns : N ; 0 <= N < size
+int hashcode(char word[], int size)
+{
+	int hash_val = 0;
+	while( *word != '\0' )
+	hash_val += *word++;
+	return( hash_val % size );
+}
+
 /**
    create and initialize hash table
 
@@ -44,19 +54,17 @@ hash_table * create_table()
 */
 int search_word(char word[], listfile_entry * filelist, hash_table * htable_ptr)
 {
+   int indexHash = hashcode(word,strlen(word));
 	int booleen = 0;
 	word_list * word_ptr = htable_ptr-> htable;
-	for(int i = 0 ; i < htable_ptr->hsize-1 ; i++) {
-		word_entry * ptr = word_ptr[i].first_word;
-		while(ptr!=NULL) {
-			if(ptr->word == word) {
-				booleen = 1;
-				printf("Le mot %s apparait %d fois dans le fichier %s",word,ptr->times, filelist[i].filename);
-			}
+	word_entry * ptr = word_ptr[indexHash].first_word;
+	while(ptr!=NULL) {
+		if(ptr->word == word) {
+			booleen = 1;
+			printf("Le mot %s apparait %d fois dans le fichier %s",word,ptr->times, filelist[indexHash].filename);
+		}
 		ptr = ptr->next;
- 		}
-  }
-
+ 	}
   return booleen;
 }
 
@@ -69,12 +77,27 @@ int search_word(char word[], listfile_entry * filelist, hash_table * htable_ptr)
    filename   : filename from where the word was read
    file_index:  the position where the filename has been stored
 */
+//Si mise a jour dans filelist, hashtable mise a jour egalement
 
 void update_table(hash_table * htable_ptr, char word[], char filename[],int file_index)
 {	
+   int indexHash = hashcode(word,strlen(word));
+   word_list * word_ptr = htable_ptr-> htable;
+	word_entry * ptr = word_ptr[indexHash].first_word;
+   while(ptr!=NULL){
+      if(word == ptr->word && file_index == ptr->in_file) {
+         ptr->times += 1;
+         exit(0);
+      }
+      ptr = ptr->next;
+   }
+   word_entry * nvlelem = (word_entry*) malloc(sizeof(word_entry));
+   strcpy(nvlelem->word, word);
+   nvlelem->times = 1;
+   nvlelem->in_file = file_index;
 
-  
-
+   ptr->next = nvlelem;
+   word_ptr[indexHash].last_word = nvlelem;
 }
 
 /**
