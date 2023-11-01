@@ -38,25 +38,24 @@ main()
 
     fprintf(stderr, "-------------------------------------------------\n");
 
-    // TO BE COMPLETED
-
     switch (choice) {
 
       // Load a file in dictionary
     case 1:
-     fprintf(stderr, "Filename to Load ? \n");
-     char filetoload[MAX_LENGTH]; //a corriger plus tard, path dossier
-     scanf("%s", filetoload);
-     add_file(filetoload, filelistptr, hashtableptr);
-
+      fprintf(stderr, "Filename to Load ? \n");
+      char * filetoload; //a corriger plus tard, path dossier
+      filetoload = (char *)malloc(sizeof(char) * MAX_LENGTH);
+      scanf("%s", filetoload);
+      add_file(filetoload, filelistptr, hashtableptr);
+      free(filetoload);
       break;
 
       // Search a word in dictionary
     case 2:
       	printf("Entrez un mot a rechercher :\n");
-      	//scanf("%s", wordSearched);
-	      //search_word(wordSearched , filelistptr,hashtableptr);
-
+      	char wordSearched[MAX_LENGTH]; //a corriger plus tard, path dossier
+        scanf("%s", wordSearched);
+	      search_word(wordSearched , filelistptr ,hashtableptr);
       break;
 
       // Remove file from dictionary
@@ -68,16 +67,12 @@ main()
 
       // Print dictionary
     case 4:
-
-      // TO BE COMPLETED
-
+      print_table(hashtableptr,filelistptr);
       break;
 
       // Print file list
     case 5:
-
-      // TO BE COMPLETED
-
+      print_list(filelistptr);
       break;
     }
     fprintf(stderr, "-------------------------------------------------\n");
@@ -90,4 +85,5 @@ main()
 
   return 0;
 }
+
 

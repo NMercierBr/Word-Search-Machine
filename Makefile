@@ -41,7 +41,12 @@ clean :
 # Test the functionality 
 #
 
+rapide :
+	make -f Makefile
+	./bin/runnableTP5 < test/serietest.txt
+#testeur
+
 test :
-	make -f makefile
+	make -f Makefile
 	make listing
 	make clean

@@ -75,40 +75,58 @@ int is_Present(char filename[],listfile_entry * filelist)
 */
 int add_file(char filename[],listfile_entry * filelist, hash_table * htable_ptr)
 {
-   FILE *fp;
-   fp = fopen(filename, "r");
+  FILE *fp;
+  fp = fopen(filename, "r");
    if(fp == NULL) {
       perror("Error opening file, or can't be read\n");
+      fclose(fp);
       return(-1);
   }
 	if(is_Present(filename,filelist)) { 
     perror("File already present in table\n");
+    fclose(fp);
     return 1; }
 	else {
 	int i =0;
 		while(filelist[i].filename[0]!='\0'){
-		i++;
+		  i++;
       if (i == MAX_FILES ) {
         perror("No space left in filelist\n");
+        fclose(fp);
         return 2;
       }
 		}
     strcpy(filelist[i].filename, filename);
+    
 		filelist[i].loaded=1;
     //load dans la hashtable, -> update table
-    char * wordactuel[MAX_LENGTH];
-    while((fp=getc(fp))!=EOF){
-      while((fp=getc(fp))!=" " || (fp=getc(fp))!="\n"){
-          fputc(wordactuel, fp);
+
+    char wordactuel[MAX_LENGTH];
+    int k, j ;
+    wordactuel[0] = '\0';
+    
+    while(fscanf(fp, " %50s" , wordactuel) == 1) {
+       char *token = strtok(wordactuel, "'");
+        while (token != NULL) {
+        for(k =0, j = 0 ; wordactuel[k] ; k++){
+          if (isalpha(wordactuel[k])){
+            wordactuel[j++] = tolower(wordactuel[k]);
+          }
+        } 
+
+      wordactuel[j] = '\0';
+     
+      if(strlen(wordactuel) > 0){
+      update_table(htable_ptr,wordactuel,filelist[i].filename,i); //update table si erreur retourne -2
+    }
+    token = strtok(NULL, "'");
       }
-      update_table(htable_ptr,wordactuel,filename,i);
-      //erreur alloc -2
     }
 	}
-  //update table si erreur retourne -2
   fclose(fp);
   return 0; // all fine
-}
+} 
+
 
 /**
    remove file from file table
@@ -122,16 +140,57 @@ int add_file(char filename[],listfile_entry * filelist, hash_table * htable_ptr)
    -1 if file not in table
     0 if file removed
 */
-int
-remove_file(char filename[],
-	    listfile_entry * filelist,
-	    hash_table * htable_ptr)
-{
 
-  // TO BE COMPLETED
+//avant de supprimer le file, on vérif
+int remove_file(char filename[],listfile_entry * filelist,hash_table * htable_ptr)
+{
+  if(htable_ptr == NULL||filelist == NULL){
+      perror("htable ou filelist non initialisé.\n");
+      return 2;
+  }
+  int i = 0;
+  while(strcmp(filelist[i].filename, filename) != 0){
+		  i++;
+      if(i== MAX_FILES){
+        perror("Fichier non présent dans la table.\n");
+        return -1;
+      }
+  }
+  //si fichier chargé, recherche dans tout le dictionnaire pour trouver tous les mots et les supprimer
+  //lorsque plus de mots du fichier x, on supprime le fichier x de la filelist ( free_filelist())
+  // i = index du fichier
+
+  int j = 0;
+  while (j < MAX_ENTRIES)
+  {
+      word_list * word_ptr = &(htable_ptr->htable[j]);
+      word_entry * ptr = word_ptr->first_word;
+
+    while (ptr != NULL);
+    {
+      if(strcmp(ptr->in_file,i) == 1){
+          //ON SUPPRIME : on réarrange la chaine de next et on free
+        if(word_ptr->first_word == ptr){  //cas ou le mot est la tête de liste
+          word_ptr->first_word = ptr->next;
+          free(ptr);
+        }
+        else if(word_ptr->last_word == ptr) { //cas ou le mot est la queue de liste
+
+        }
+        else {
+
+        }
+
+      }
+      ptr=ptr->next;
+    }
+    j++;
+  }
+  
 
   return 0;
 }
+
 
 /*
   print file table (only loaded files)
@@ -139,12 +198,16 @@ remove_file(char filename[],
   parameters :
    filelist : pointer to table of files
 */
-void
-print_list(listfile_entry * filelist)
+void print_list(listfile_entry * filelist)
 {
-
-  // TO BE COMPLETED
-
+  if(filelist!= NULL){
+  int i = 0;
+  while (filelist[i].loaded == 1)
+  {
+    printf("Le fichier %s est chargé.\n", filelist[i].filename);
+    i++;
+    }
+  }
 }
 
 /**
