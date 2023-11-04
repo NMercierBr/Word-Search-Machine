@@ -61,12 +61,12 @@ int search_word(char word[], listfile_entry * filelist, hash_table * htable_ptr)
 	while(ptr!=NULL) {
 		if(strcmp(word, ptr->word) == 0) {
 			booleen = 1;
-			printf("Le mot %s apparait %d fois dans le fichier %s\n",word,ptr->times, filelist[ptr->in_file].filename);
+			printf("The word %s appears %d times in the file %s\n",word,ptr->times, filelist[ptr->in_file].filename);
 		}
 		ptr = ptr->next;
  	}
    if(booleen == 0){
-      printf("Le mot %s n'est contenu dans aucuns fichiers\n", word);
+      printf("The word %s is not contained in any files\n", word);
    }
   return booleen;
 }
@@ -113,6 +113,7 @@ void update_table(hash_table * htable_ptr, char word[], char filename[],int file
         word_ptr->last_word->next = nvlelem;
         word_ptr->last_word = nvlelem;
     }
+   
 }
 
 
@@ -132,7 +133,7 @@ void print_table(hash_table * htable_ptr, listfile_entry * filelist)
   {
    ptr = word_ptr[i].first_word;
     while (ptr !=  NULL){
-      printf("mot : %s , fichier :  %s , NbOccurences : %d.\n",ptr->word, filelist[ptr->in_file].filename ,ptr->times);
+      printf("Word : %s , file :  %s , NbOccurences : %d.\n",ptr->word, filelist[ptr->in_file].filename ,ptr->times);
       ptr=ptr->next;
    }
    i++;
@@ -146,12 +147,23 @@ void print_table(hash_table * htable_ptr, listfile_entry * filelist)
    parameters :
    htable_ptr : pointer to hash table
 */
-void free_table(hash_table * htable_ptr)
-{
-
-  // TO BE COMPLETED
-
+void free_table(hash_table *htable_ptr) {
+    if (htable_ptr != NULL) {
+        if (htable_ptr->htable != NULL) {
+            for (int i = 0; i < MAX_ENTRIES ; i++) {
+                word_entry * current = htable_ptr->htable[i].first_word;
+                while (current != NULL) {
+                    word_entry *temp = current;
+                    current = current->next;
+                    free(temp);
+                }
+            }
+            free(htable_ptr->htable);
+        }
+        free(htable_ptr);
+    }
 }
+
 
 // ------------------------------------------------------------------------
 // inner functions definitions

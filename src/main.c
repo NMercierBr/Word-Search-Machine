@@ -23,13 +23,12 @@ main()
     fprintf(stderr, "%d. Load a file in dictionary\n", ++nbchoices);
     fprintf(stderr, "%d. Search a word in dictionary\n", ++nbchoices);
     fprintf(stderr, "%d. Remove file from dictionary\n", ++nbchoices);
-    fprintf(stderr, "\n");
     fprintf(stderr, "%d. Print dictionary\n", ++nbchoices);
     fprintf(stderr, "%d. Print file list\n", ++nbchoices);
-    fprintf(stderr, "\n0. Quit\n");
+    fprintf(stderr, "0. Quit\n\n");
     int choice;
     while (1) {
-      fprintf(stderr, "Your choice ? ");
+      fprintf(stderr, "Your choice ? \n");
       scanf("%d", & choice);
       if (choice >= 0 && choice <= nbchoices) { break; }
       fprintf(stderr, "\nError %d is an incorrect choice\n", choice);
@@ -42,27 +41,26 @@ main()
 
       // Load a file in dictionary
     case 1:
-      fprintf(stderr, "Filename to Load ? \n");
-      char * filetoload; //a corriger plus tard, path dossier
-      filetoload = (char *)malloc(sizeof(char) * MAX_LENGTH);
+      fprintf(stderr, "File to Load ? \n");
+      char filetoload[MAX_LENGTH];
       scanf("%s", filetoload);
       add_file(filetoload, filelistptr, hashtableptr);
-      free(filetoload);
       break;
 
       // Search a word in dictionary
     case 2:
-      	printf("Entrez un mot a rechercher :\n");
-      	char wordSearched[MAX_LENGTH]; //a corriger plus tard, path dossier
+      	printf("Enter a word to search for :\n");
+      	char wordSearched[MAX_LENGTH]; 
         scanf("%s", wordSearched);
 	      search_word(wordSearched , filelistptr ,hashtableptr);
       break;
 
       // Remove file from dictionary
     case 3:
-
-      // TO BE COMPLETED
-
+        printf("Which file do you want to delete?\n");
+      	char fileToDelete[MAX_LENGTH]; 
+        scanf("%s", fileToDelete);
+	      remove_file(fileToDelete , filelistptr ,hashtableptr);
       break;
 
       // Print dictionary
@@ -79,9 +77,10 @@ main()
 
   }
 
-  // the end : free allocated memory
+  //free_filelist(filelistptr);
+  //free_table(hashtableptr);
 
-  // TO BE COMPLETED
+  fprintf(stderr, "--------------- Free Memory ---------------\n");
 
   return 0;
 }

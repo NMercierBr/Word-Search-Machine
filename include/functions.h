@@ -31,6 +31,7 @@ print_list(listfile_entry * filelist);
 void
 free_filelist(listfile_entry * filelist);
 
+
 // ------------------------------------------------------------------------
 // hash.c
 // ------------------------------------------------------------------------
@@ -67,7 +68,6 @@ free_table(hash_table * htable_ptr);
 
 // compute hash value for word
 // returns : N;/ 0 <= N < size
-int
-hashcode(char word[], int size);
+int hashcode(char word[], int size);
 
 #endif // __FUNCTIONS_H__
