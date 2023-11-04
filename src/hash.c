@@ -129,7 +129,7 @@ void print_table(hash_table * htable_ptr, listfile_entry * filelist)
    word_list * word_ptr = htable_ptr-> htable;
    int i = 0;
    word_entry * ptr = word_ptr[i].first_word;
-  while (i<=MAX_ENTRIES)
+  while (i<MAX_ENTRIES)
   {
    ptr = word_ptr[i].first_word;
     while (ptr !=  NULL){

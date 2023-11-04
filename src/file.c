@@ -220,13 +220,6 @@ parameters :
 */
 void free_filelist(listfile_entry * filelist)
 {
-  /*
-  if (filelist != NULL) {
-    for(int i = 0 ; i < MAX_FILES ; i++){
-      free(filelist[i].filename);
-    }
- }
-  */
  free(filelist);
 }
 
