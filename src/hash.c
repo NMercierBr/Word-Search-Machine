@@ -163,11 +163,3 @@ void free_table(hash_table *htable_ptr) {
         free(htable_ptr);
     }
 }
-
-
-// ------------------------------------------------------------------------
-// inner functions definitions
-// ------------------------------------------------------------------------
-
-// TO BE COMPLETED
-

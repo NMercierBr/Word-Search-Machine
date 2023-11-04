@@ -15,6 +15,7 @@ main()
 
   // create filelist array
  listfile_entry * filelistptr = create_filelist(MAX_FILES);
+  
 
   // display menu
   while (1) {
@@ -77,9 +78,9 @@ main()
 
   }
 
-  //free_filelist(filelistptr);
-  //free_table(hashtableptr);
-
+  free_table(hashtableptr);
+  free_filelist(filelistptr);
+  
   fprintf(stderr, "--------------- Free Memory ---------------\n");
 
   return 0;

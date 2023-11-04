@@ -79,12 +79,10 @@ int add_file(char filename[],listfile_entry * filelist, hash_table * htable_ptr)
   fp = fopen(filename, "r");
    if(fp == NULL) {
       perror("Error opening file, or can't be read\n");
-      fclose(fp);
       return(-1);
   }
 	if(is_Present(filename,filelist)) { 
     perror("File already present in table\n");
-    fclose(fp);
     return 1; }
 	else {
 	int i =0;
@@ -99,7 +97,7 @@ int add_file(char filename[],listfile_entry * filelist, hash_table * htable_ptr)
     strcpy(filelist[i].filename, filename);
     
 		filelist[i].loaded=1;
-    //load dans la hashtable, -> update table
+    //load dans la filelist, -> update table
 
     char wordactuel[MAX_LENGTH];
     int k, j ;
@@ -161,8 +159,8 @@ int remove_file(char filename[],listfile_entry * filelist,hash_table * htable_pt
   //si fichier chargé, recherche dans tout le dictionnaire pour trouver tous les mots et les supprimer
   // i = index du fichier
   // on supprime le fichier i de la filelist 
-
-    strcpy(filelist[i].filename, "");
+    
+    strcpy(filelist[i].filename, "");   //ma manière de supprimer filename = '\0' et loaded = 0
     filelist[i].loaded = 0;
     for (int j = 0; j < MAX_ENTRIES; j++) {
 
@@ -222,19 +220,13 @@ parameters :
 */
 void free_filelist(listfile_entry * filelist)
 {
+  /*
   if (filelist != NULL) {
-        for (int i = 0; i < MAX_FILES; i++) {
-            if (filelist[i].loaded != 1) {
-               free(filelist[i].filename);
-            }
-        }
-        free(filelist);
+    for(int i = 0 ; i < MAX_FILES ; i++){
+      free(filelist[i].filename);
     }
+ }
+  */
+ free(filelist);
 }
-
-// ************************************************************************
-// inner functions
-// ************************************************************************
-
-// TO BE COMPLETED
 

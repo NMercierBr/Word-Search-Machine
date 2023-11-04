@@ -4,8 +4,8 @@ CFLAGS = -Wall -g
 # Link
 #
 
-bin/runnableTP5: obj/file.o obj/hash.o obj/main.o
-	gcc -o bin/runnableTP5 obj/file.o obj/hash.o obj/main.o
+bin/WordSearchMachine: obj/file.o obj/hash.o obj/main.o
+	gcc -o bin/WordSearchMachine obj/file.o obj/hash.o obj/main.o
 
 #
 # Objets of TP Lists
@@ -35,7 +35,7 @@ listing:
 
 clean :
 	rm obj/*.o
-	rm bin/runnableTP5
+	rm bin/WordSearchMachine
 
 #
 # Test the functionality 
@@ -43,7 +43,7 @@ clean :
 
 rapide :
 	make -f Makefile
-	./bin/runnableTP5 < test/serietest.txt
+	./bin/WordSearchMachine < test/serietest.txt
 #testeur
 
 test :
