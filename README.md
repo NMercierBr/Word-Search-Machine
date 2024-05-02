@@ -8,6 +8,5 @@ You can:
    - **Print** loaded file list
      
 > **Note:**
-
- Compile the makefile and you can run the executable.      
-          Written in C and partially finished
+>        Compile the makefile and you can run the executable.      
+>      Written in C and partially finished
