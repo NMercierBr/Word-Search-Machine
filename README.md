@@ -9,4 +9,4 @@ You can:
      
 > **Note:**
  Compile the makefile and you can run the executable.      
- Written in C and partially finished
+          Written in C and partially finished
